@@ -3,6 +3,8 @@ André Tedesco Batistela
 Eduardo Hermes Becker
 João Pedro Guzzi
 
+# Lider escolhido: Eduardo Hermes Becker
+
 # ---------------------------------------------------------------------------------------------- #
 
 
