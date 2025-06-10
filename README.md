@@ -1,5 +1,6 @@
 # Integrantes
 André Tedesco Batistela
+Andrey Zuffo
 Eduardo Hermes Becker
 João Pedro Guzzi
 
