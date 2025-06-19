@@ -9,7 +9,7 @@ $config = [
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
         'request' => [
@@ -50,6 +50,18 @@ $config = [
             ],
         ],
         */
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                // Adicione estas regras:
+                'GET api/tipo-vinho' => 'tipo-vinho/api-index',
+                'GET api/tipo-vinho/<id:\d+>' => 'tipo-vinho/api-view',
+                'POST api/tipo-vinho' => 'tipo-vinho/api-create',
+                'PUT api/tipo-vinho/<id:\d+>' => 'tipo-vinho/api-update',
+                'DELETE api/tipo-vinho/<id:\d+>' => 'tipo-vinho/api-delete',
+            ],
+        ],
     ],
     'params' => $params,
 ];
