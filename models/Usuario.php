@@ -3,30 +3,18 @@
 namespace app\models;
 
 use Yii;
+use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "usuario".
- *
- * @property int $id_usuario
- * @property string|null $nome
- * @property int $admin
- * @property string $senha
+ * Modelo da tabela "usuario", com suporte à autenticação.
  */
-class Usuario extends \yii\db\ActiveRecord
+class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
 {
-
-
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'usuario';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -37,17 +25,50 @@ class Usuario extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
-            'id_usuario' => 'Id Usuario',
-            'nome' => 'Nome',
-            'admin' => 'Admin',
+            'id_usuario' => 'ID',
+            'nome' => 'Nome de Usuário',
+            'admin' => 'Administrador',
             'senha' => 'Senha',
         ];
     }
 
+    // Métodos da interface IdentityInterface
+
+    public static function findIdentity($id)
+    {
+        return self::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return null; // API desativada por enquanto
+    }
+
+    public static function findByUsername($username)
+    {
+        return self::findOne(['nome' => $username]);
+    }
+
+    public function getId()
+    {
+        return $this->id_usuario;
+    }
+
+    public function getAuthKey()
+    {
+        return null;
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        return true;
+    }
+
+    public function validatePassword($password)
+    {
+        return $this->senha === $password;
+    }
 }
