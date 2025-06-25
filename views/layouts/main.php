@@ -26,22 +26,27 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100" style="padding-top: 56px;">
 <?php $this->beginBody() ?>
 
 <header id="header">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => 'ADEGA DE VINHO',
         'brandUrl' => Yii::$app->homeUrl,
-        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+        'options' => [
+            'class' => 'navbar-expand-md navbar-dark fixed-top shadow-sm',
+            'style' => 'background-color: #5C001F;'
+        ]
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
+        'options' => ['class' => 'navbar-nav ms-auto'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Vinhos', 'url' => ['/vinho/index']],
+
+            ['label' => 'Fornecedor', 'url' => ['/fornecedor/index']],
+            
+            ['label' => 'Relatorio', 'url' => ['/movimento-produto/index']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
