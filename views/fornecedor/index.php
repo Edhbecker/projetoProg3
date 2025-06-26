@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var app\models\FornecedorSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Fornecedors';
+$this->title = 'Fornecedores';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="fornecedor-index">

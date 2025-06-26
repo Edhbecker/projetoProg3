@@ -33,7 +33,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php
     NavBar::begin([
         'brandLabel' => 'ADEGA DE VINHO',
-        // MUDANÇA AQUI: O link do título, que antes apontava para a página inicial (homeUrl), agora aponta para a página de vinhos.
         'brandUrl' => ['/vinho/index'],
         'options' => [
             'class' => 'navbar-expand-md navbar-dark fixed-top shadow-sm',
@@ -43,9 +42,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav ms-auto'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Vinhos', 'url' => ['/vinho/index']],
             ['label' => 'Fornecedor', 'url' => ['/fornecedor/index']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Relatorio', 'url' => ['/movimento-produto']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
