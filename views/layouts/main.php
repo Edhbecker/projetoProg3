@@ -33,7 +33,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php
     NavBar::begin([
         'brandLabel' => 'ADEGA DE VINHO',
-        'brandUrl' => Yii::$app->homeUrl,
+        // MUDANÇA AQUI: O link do título, que antes apontava para a página inicial (homeUrl), agora aponta para a página de vinhos.
+        'brandUrl' => ['/vinho/index'],
         'options' => [
             'class' => 'navbar-expand-md navbar-dark fixed-top shadow-sm',
             'style' => 'background-color: #5C001F;'
@@ -42,17 +43,15 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav ms-auto'],
         'items' => [
-            ['label' => 'Vinhos', 'url' => ['/vinho/index']],
-
+            ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Fornecedor', 'url' => ['/fornecedor/index']],
-            
-            ['label' => 'Relatorio', 'url' => ['/movimento-produto/index']],
+            ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->nome . ')',
+                        'Logout (' . Yii::$app->user->identity->username . ')',
                         ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()
