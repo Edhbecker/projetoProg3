@@ -61,8 +61,30 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $relatorio = Yii::$app->db->createCommand("
+        SELECT 
+            v.id_vinho,
+            v.nome AS nome_vinho,
+            v.safra,
+            v.preco,
+            v.teor,
+            v.qtd_estoque,
+            tv.descricao AS tipo,
+            b.nome AS bodega,
+            f.nome AS fornecedor
+        FROM vinho v
+        LEFT JOIN tipo_vinho tv ON v.id_tipo_vinho = tv.id_tipo_vinho
+        LEFT JOIN bodega b ON v.id_bodega = b.id_bodega
+        LEFT JOIN fornecedor_vinho fv ON v.id_vinho = fv.id_vinho
+        LEFT JOIN fornecedor f ON fv.id_fornecedor = f.id_fornecedor
+        ORDER BY v.nome
+    ")->queryAll();
+
+        return $this->render('index', [
+            'relatorio' => $relatorio,
+        ]);
     }
+
 
     /**
      * Login action.

@@ -1,53 +1,53 @@
 <?php
 
 /** @var yii\web\View $this */
+/** @var array $relatorio */
 
-$this->title = 'My Yii Application';
+use yii\helpers\Html;
+
+$this->title = 'Relatório Geral';
 ?>
+
 <div class="site-index">
-
     <div class="jumbotron text-center bg-transparent mt-5 mb-5">
-        <h1 class="display-4">Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
+        <h1 class="display-4">Vinhos</h1>
+        <p class="lead">Informações de estoque, fornecedores e tipos de vinho.</p>
     </div>
 
     <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
+        <?php if (!empty($relatorio)): ?>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome do Vinho</th>
+                        <th>Safra</th>
+                        <th>Tipo</th>
+                        <th>Bodega</th>
+                        <th>Fornecedor</th>
+                        <th>Teor (%)</th>
+                        <th>Preço (R$)</th>
+                        <th>Estoque</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($relatorio as $index => $vinho): ?>
+                        <tr>
+                            <td><?= $index + 1 ?></td>
+                            <td><?= Html::encode($vinho['nome_vinho']) ?></td>
+                            <td><?= Html::encode($vinho['safra']) ?></td>
+                            <td><?= Html::encode($vinho['tipo']) ?></td>
+                            <td><?= Html::encode($vinho['bodega']) ?></td>
+                            <td><?= Html::encode($vinho['fornecedor']) ?></td>
+                            <td><?= Html::encode($vinho['teor']) ?></td>
+                            <td>R$ <?= number_format($vinho['preco'], 2, ',', '.') ?></td>
+                            <td><?= Html::encode($vinho['qtd_estoque']) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <div class="alert alert-info">Nenhum dado encontrado.</div>
+        <?php endif; ?>
     </div>
 </div>
