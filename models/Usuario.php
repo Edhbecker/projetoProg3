@@ -69,6 +69,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function validatePassword($password)
     {
-        return $this->senha === $password;
+        // return $this->senha === $password;
+        return Yii::$app->security->validatePassword($password, $this->senha);
     }
 }

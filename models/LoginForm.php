@@ -36,6 +36,7 @@ class LoginForm extends Model
         }
     }
 
+
     public function login()
     {
         $user = $this->getUser();

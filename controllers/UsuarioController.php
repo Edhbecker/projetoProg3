@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
 use yii\web\Controller;
@@ -66,21 +67,27 @@ class UsuarioController extends Controller
      * @return string|\yii\web\Response
      */
     public function actionCreate()
-    {
-        $model = new Usuario();
+{
+    $model = new Usuario();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+    if ($this->request->isPost) {
+        if ($model->load($this->request->post())) {
+            // Criptografa a senha antes de salvar
+            $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
+
+            if ($model->save()) {
                 return $this->redirect(['view', 'id_usuario' => $model->id_usuario]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+    } else {
+        $model->loadDefaultValues();
     }
+
+    return $this->render('create', [
+        'model' => $model,
+    ]);
+}
+
 
     /**
      * Updates an existing Usuario model.
