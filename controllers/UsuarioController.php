@@ -67,26 +67,26 @@ class UsuarioController extends Controller
      * @return string|\yii\web\Response
      */
     public function actionCreate()
-{
-    $model = new Usuario();
+    {
+        $model = new Usuario();
 
-    if ($this->request->isPost) {
-        if ($model->load($this->request->post())) {
-            // Criptografa a senha antes de salvar
-            $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                // Criptografa a senha antes de salvar
+                $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
 
-            if ($model->save()) {
-                return $this->redirect(['view', 'id_usuario' => $model->id_usuario]);
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id_usuario' => $model->id_usuario]);
+                }
             }
+        } else {
+            $model->loadDefaultValues();
         }
-    } else {
-        $model->loadDefaultValues();
-    }
 
-    return $this->render('create', [
-        'model' => $model,
-    ]);
-}
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
 
 
     /**
@@ -100,14 +100,26 @@ class UsuarioController extends Controller
     {
         $model = $this->findModel($id_usuario);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_usuario' => $model->id_usuario]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            // Verifica se o campo de senha foi preenchido
+            if (!empty($model->senha)) {
+                // Criptografa a nova senha
+                $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
+            } else {
+                // Mantém a senha antiga
+                $model->senha = $model->getOldAttribute('senha');
+            }
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id_usuario' => $model->id_usuario]);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
     }
+
 
     /**
      * Deletes an existing Usuario model.
