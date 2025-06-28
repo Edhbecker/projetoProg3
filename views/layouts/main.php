@@ -33,7 +33,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php
     NavBar::begin([
         'brandLabel' => 'ADEGA DE VINHO',
-        'brandUrl' => ['/vinho/index'],
+        'brandUrl' => ['/'],
         'options' => [
             'class' => 'navbar-expand-md navbar-dark fixed-top shadow-sm',
             'style' => 'background-color: #5C001F;'
