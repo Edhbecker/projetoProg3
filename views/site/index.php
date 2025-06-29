@@ -10,7 +10,7 @@ $this->title = 'Relatório Geral';
 
 <div class="site-index">
     <div class="jumbotron text-center bg-transparent mt-5 mb-5">
-        <h1 class="display-4">Vinhos</h1>
+        <h1 class="display-4">Adega</h1>
         <p class="lead">Informações de estoque, fornecedores e tipos de vinho.</p>
     </div>
 
