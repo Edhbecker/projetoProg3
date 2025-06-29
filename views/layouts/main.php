@@ -41,10 +41,15 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav ms-auto'],
-        'items' => [
+        'items' => array_merge([
             ['label' => 'Vinhos', 'url' => ['/vinho/index']],
             ['label' => 'Fornecedor', 'url' => ['/fornecedor/index']],
             ['label' => 'Relatorio', 'url' => ['/movimento-produto']],
+        ],
+        (!Yii::$app->user->isGuest && Yii::$app->user->identity->admin == 1) ? [
+            ['label' => 'Usuários', 'url' => ['/usuario/index']],
+        ] : [],
+        [
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
@@ -55,7 +60,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     )
                     . Html::endForm()
                     . '</li>'
-        ]
+        ])
     ]);
     NavBar::end();
     ?>
