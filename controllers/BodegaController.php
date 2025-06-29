@@ -7,6 +7,7 @@ use app\models\BodegaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * BodegaController implements the CRUD actions for Bodega model.
@@ -21,8 +22,17 @@ class BodegaController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Apenas usuários logados
+                        ],
+                    ],
+                ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -30,6 +40,7 @@ class BodegaController extends Controller
             ]
         );
     }
+
 
     /**
      * Lists all Bodega models.

@@ -7,6 +7,7 @@ use app\models\MovimentoProdutoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * MovimentoProdutoController implements the CRUD actions for MovimentoProduto model.
@@ -21,6 +22,15 @@ class MovimentoProdutoController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Apenas usuários logados
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -30,6 +40,7 @@ class MovimentoProdutoController extends Controller
             ]
         );
     }
+
 
     /**
      * Lists all MovimentoProduto models.

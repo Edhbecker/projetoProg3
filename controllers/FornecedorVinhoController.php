@@ -7,7 +7,7 @@ use app\models\FornecedorVinhoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\filters\AccessControl;
 /**
  * FornecedorVinhoController implements the CRUD actions for FornecedorVinho model.
  */
@@ -21,6 +21,15 @@ class FornecedorVinhoController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Apenas usuários logados
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -30,6 +39,7 @@ class FornecedorVinhoController extends Controller
             ]
         );
     }
+
 
     /**
      * Lists all FornecedorVinho models.

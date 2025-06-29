@@ -7,6 +7,7 @@ use app\models\FornecedorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * FornecedorController implements the CRUD actions for Fornecedor model.
@@ -21,8 +22,17 @@ class FornecedorController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Apenas usuários logados
+                        ],
+                    ],
+                ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -30,6 +40,7 @@ class FornecedorController extends Controller
             ]
         );
     }
+
 
     /**
      * Lists all Fornecedor models.

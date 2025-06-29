@@ -8,6 +8,7 @@ use app\models\UsuarioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * UsuarioController implements the CRUD actions for Usuario model.
@@ -22,6 +23,15 @@ class UsuarioController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Apenas usuários logados
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -31,6 +41,7 @@ class UsuarioController extends Controller
             ]
         );
     }
+
 
     /**
      * Lists all Usuario models.

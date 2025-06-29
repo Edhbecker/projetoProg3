@@ -6,9 +6,25 @@ use Yii;
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
+use yii\filters\AccessControl;
 
 class RelatorioController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'], // Apenas usuários autenticados
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         $query = (new Query())

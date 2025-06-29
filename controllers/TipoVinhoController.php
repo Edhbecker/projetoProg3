@@ -7,6 +7,7 @@ use app\models\TipoVinhoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * TipoVinhoController implements the CRUD actions for TipoVinho model.
@@ -21,15 +22,25 @@ class TipoVinhoController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Permite apenas usuários autenticados
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
-                        'delete' => ['POST'],
+                        'delete' => ['POST'], // Só permite POST para delete
                     ],
                 ],
             ]
         );
     }
+
 
     /**
      * Lists all TipoVinho models.

@@ -7,6 +7,7 @@ use app\models\VinhoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * VinhoController implements the CRUD actions for Vinho model.
@@ -21,6 +22,15 @@ class VinhoController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Apenas usuários logados
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -30,6 +40,7 @@ class VinhoController extends Controller
             ]
         );
     }
+
 
     /**
      * Lists all Vinho models.

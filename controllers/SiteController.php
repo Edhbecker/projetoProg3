@@ -15,28 +15,29 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+public function behaviors()
+{
+    return [
+        'access' => [
+            'class' => AccessControl::class,
+            'only' => ['index', 'logout'], // "index"
+            'rules' => [
+                [
+                    'actions' => ['index', 'logout'],
+                    'allow' => true,
+                    'roles' => ['@'], // Apenas usuários logados
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'logout' => ['post'],
-                ],
+        ],
+        'verbs' => [
+            'class' => VerbFilter::class,
+            'actions' => [
+                'logout' => ['post'],
             ],
-        ];
-    }
+        ],
+    ];
+}
+
 
     /**
      * {@inheritdoc}

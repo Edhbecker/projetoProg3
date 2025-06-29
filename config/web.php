@@ -22,6 +22,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\Usuario',
             'enableAutoLogin' => true,
+            'loginUrl' => ['site/login'], // Redireciona para a rota 'login' se não estiver logado
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
