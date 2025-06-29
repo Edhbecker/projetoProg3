@@ -32,7 +32,7 @@ class VinhoController extends Controller
                     ],
                 ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -41,12 +41,49 @@ class VinhoController extends Controller
         );
     }
 
-
     /**
-     * Lists all Vinho models.
-     *
-     * @return string
+     * Atualiza o estoque de um vinho com base no movimento.
+     * @param int $id_vinho
+     * @param int $quantidade
+     * @param int $fl_movimento (1 = entrada, 0 = saída)
+     * @return bool|string true se sucesso, string com mensagem de erro em caso de falha
      */
+    public function atualizarEstoque($id_vinho, $quantidade, $fl_movimento)
+    {
+        $vinho = Vinho::findOne($id_vinho);
+
+        if (!$vinho) {
+            return "Vinho não encontrado.";
+        }
+
+        $fl_movimento = (int) $fl_movimento;
+        $quantidade = (int) $quantidade;
+
+        if (!in_array($fl_movimento, [0, 1], true)) {
+            return "Tipo de movimento inválido.";
+        }
+
+        if ($quantidade <= 0) {
+            return "Quantidade deve ser maior que zero.";
+        }
+
+        if ($fl_movimento === 1) {
+            // Entrada: soma a quantidade no estoque
+            $vinho->qtd_estoque += $quantidade;
+        } else {
+            // Saída: verifica se estoque é suficiente antes de subtrair
+            if ($vinho->qtd_estoque < $quantidade) {
+                return "Estoque insuficiente. Disponível: {$vinho->qtd_estoque}";
+            }
+            $vinho->qtd_estoque -= $quantidade;
+        }
+
+        if (!$vinho->save()) {
+            return "Erro ao atualizar o estoque.";
+        }
+
+        return true;
+    }
     public function actionIndex()
     {
         $searchModel = new VinhoSearch();
@@ -58,12 +95,6 @@ class VinhoController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Vinho model.
-     * @param int $id_vinho Id Vinho
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id_vinho)
     {
         return $this->render('view', [
@@ -71,11 +102,6 @@ class VinhoController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Vinho model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new Vinho();
@@ -93,13 +119,6 @@ class VinhoController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Vinho model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id_vinho Id Vinho
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id_vinho)
     {
         $model = $this->findModel($id_vinho);
@@ -113,13 +132,6 @@ class VinhoController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Vinho model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id_vinho Id Vinho
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id_vinho)
     {
         $this->findModel($id_vinho)->delete();
@@ -127,13 +139,6 @@ class VinhoController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Vinho model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id_vinho Id Vinho
-     * @return Vinho the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id_vinho)
     {
         if (($model = Vinho::findOne(['id_vinho' => $id_vinho])) !== null) {

@@ -21,8 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Movimento Produto', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -36,12 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'fl_movimento',
             [
                 'class' => ActionColumn::className(),
+                'template' => '{view} {delete}', // <- Remove o botão de edição
                 'urlCreator' => function ($action, MovimentoProduto $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id_movimento_produto' => $model->id_movimento_produto]);
-                 }
+                },
             ],
         ],
     ]); ?>
-
 
 </div>

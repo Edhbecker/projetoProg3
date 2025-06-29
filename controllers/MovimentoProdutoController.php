@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\MovimentoProduto;
 use app\models\MovimentoProdutoSearch;
+use app\controllers\VinhoController;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,9 +15,6 @@ use yii\filters\AccessControl;
  */
 class MovimentoProdutoController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -32,7 +30,7 @@ class MovimentoProdutoController extends Controller
                     ],
                 ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -41,12 +39,6 @@ class MovimentoProdutoController extends Controller
         );
     }
 
-
-    /**
-     * Lists all MovimentoProduto models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $searchModel = new MovimentoProdutoSearch();
@@ -58,12 +50,6 @@ class MovimentoProdutoController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single MovimentoProduto model.
-     * @param int $id_movimento_produto Id Movimento Produto
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id_movimento_produto)
     {
         return $this->render('view', [
@@ -71,18 +57,33 @@ class MovimentoProdutoController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new MovimentoProduto model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new MovimentoProduto();
 
+        $vinhos = \app\models\Vinho::find()
+            ->select(['nome', 'id_vinho'])
+            ->orderBy('nome')
+            ->indexBy('id_vinho')
+            ->column();
+
+        $tiposMovimento = [
+            1 => 'Entrada',
+            0 => 'Saída',
+        ];
+
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_movimento_produto' => $model->id_movimento_produto]);
+            if ($model->load($this->request->post())) {
+                $vinhoController = new VinhoController('vinho', \Yii::$app);
+                $result = $vinhoController->atualizarEstoque($model->id_vinho, $model->qtd_movimento, $model->fl_movimento);
+
+                if ($result === true) {
+                    if ($model->save()) {
+                        return $this->redirect(['view', 'id_movimento_produto' => $model->id_movimento_produto]);
+                    }
+                } else {
+                    $model->addError('qtd_movimento', $result);
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -90,56 +91,39 @@ class MovimentoProdutoController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'vinhos' => $vinhos,
+            'tiposMovimento' => $tiposMovimento,
         ]);
     }
 
-    /**
-     * Updates an existing MovimentoProduto model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id_movimento_produto Id Movimento Produto
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id_movimento_produto)
+    public function actionDelete($id_movimento_produto)
     {
         $model = $this->findModel($id_movimento_produto);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_movimento_produto' => $model->id_movimento_produto]);
+        $vinhoController = new VinhoController('vinho', \Yii::$app);
+
+        $result = $vinhoController->atualizarEstoque(
+            $model->id_vinho,
+            $model->qtd_movimento,
+            $model->fl_movimento == 1 ? 0 : 1
+        );
+
+        if ($result !== true) {
+            \Yii::$app->session->setFlash('error', "Erro ao atualizar estoque: $result");
+            return $this->redirect(['index']);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing MovimentoProduto model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id_movimento_produto Id Movimento Produto
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id_movimento_produto)
-    {
-        $this->findModel($id_movimento_produto)->delete();
+        $model->delete();
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the MovimentoProduto model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id_movimento_produto Id Movimento Produto
-     * @return MovimentoProduto the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id_movimento_produto)
     {
         if (($model = MovimentoProduto::findOne(['id_movimento_produto' => $id_movimento_produto])) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Movimento não encontrado.');
     }
 }

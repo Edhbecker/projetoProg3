@@ -4,8 +4,10 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var app\models\MovimentoProduto $model */
+/** @var array $vinhos */
+/** @var array $tiposMovimento */
 
-$this->title = 'Create Movimento Produto';
+$this->title = 'Cadastrar Movimento de Produto';
 $this->params['breadcrumbs'][] = ['label' => 'Movimento Produtos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,6 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'vinhos' => $vinhos,
+        'tiposMovimento' => $tiposMovimento,
     ]) ?>
 
 </div>
