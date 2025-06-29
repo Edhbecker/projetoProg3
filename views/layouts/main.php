@@ -44,7 +44,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'items' => array_merge([
             ['label' => 'Vinhos', 'url' => ['/vinho/index']],
             ['label' => 'Fornecedor', 'url' => ['/fornecedor/index']],
-            ['label' => 'Relatorio', 'url' => ['/movimento-produto']],
+            ['label' => 'Relatorio', 'url' => ['/relatorio']],
         ],
         (!Yii::$app->user->isGuest && Yii::$app->user->identity->admin == 1) ? [
             ['label' => 'Usuários', 'url' => ['/usuario/index']],
