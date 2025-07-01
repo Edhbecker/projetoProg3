@@ -44,11 +44,11 @@ INSERT INTO fornecedor_vinho (id_fornecedor, id_vinho) VALUES
 -- Inserir dados na tabela 'usuario' com os nomes solicitados
 -- Senhas em texto claro (para exemplo). Em um ambiente real, use hashes.
 INSERT INTO usuario (nome, admin, senha) VALUES
-('admin_user', 1, 'admin123'),
-('joao', 0, 'senha_joao'),
-('eduardo', 0, 'senha_eduardo'),
-('andre', 0, 'senha_andre'),
-('andrey', 0, 'senha_andrey');
+('admin_user', 1, '$2y$13$GYExZttrgpNovsI2HqrjxuR4BnGJIYBshya5NGbuM4F6IogHxIxBK'),
+('joao', 0, '$2y$13$GYExZttrgpNovsI2HqrjxuR4BnGJIYBshya5NGbuM4F6IogHxIxBK'),
+('eduardo', 0, '$2y$13$GYExZttrgpNovsI2HqrjxuR4BnGJIYBshya5NGbuM4F6IogHxIxBK'),
+('andre', 0, '$2y$13$GYExZttrgpNovsI2HqrjxuR4BnGJIYBshya5NGbuM4F6IogHxIxBK'),
+('andrey', 0, '$2y$13$GYExZttrgpNovsI2HqrjxuR4BnGJIYBshya5NGbuM4F6IogHxIxBK');
 
 -- Inserir dados na tabela 'movimento_produto'
 -- Movimentações de estoque com datas atualizadas
